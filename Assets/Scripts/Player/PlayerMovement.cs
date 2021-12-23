@@ -25,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpForce = 21.5F;
         }
+        else if (SceneManager.GetActiveScene().name == "Keyboard")
+        {
+            jumpForce = 27.5F;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

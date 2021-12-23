@@ -8,4 +8,19 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DiscreteSmile.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/MenuDiscreteSmile.unity
+    guid: 63971c942bda41c43b2f12b206d23edd
+  - enabled: 1
+    path: Assets/Scenes/ContinuousSmile.unity
+    guid: bc5c87a38b91caa43aea0aeb37de3377
+  - enabled: 1
+    path: Assets/Scenes/MenuCountinuousSmile.unity
+    guid: e337edabdaa1b9947a401b513671da00
+  - enabled: 1
+    path: Assets/Scenes/Keyboard.unity
+    guid: cbe225831813896478aead66a2c9d42a
+  - enabled: 1
+    path: Assets/Scenes/MenuKeyboard.unity
+    guid: 0d6a712f616d7d04190ffe3abbbcf20d
   m_configObjects: {}

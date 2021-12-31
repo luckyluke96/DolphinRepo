@@ -5,14 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     private Rigidbody2D rigidBody;
     public bool canJump = true;
 
     // Max JF = 27.5F
     public float jumpForce = 21.5F;
     
-    // Start is called before the first frame update
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -24,10 +22,6 @@ public class PlayerMovement : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "ContinuousSmile")
         {
             jumpForce = 21.5F;
-        }
-        else if (SceneManager.GetActiveScene().name == "Keyboard")
-        {
-            jumpForce = 27.5F;
         }
     }
 

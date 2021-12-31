@@ -26,44 +26,46 @@ public class SmileTicker : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void CheckForSmile()
     {
 
-        if (smileReceiver.smileReceived && playerMovement.canJump)
+        if (counter < 27.5)
         {
-            counter += 0.25F;
-            jumpIsCharging = true;
-            Debug.Log("Counted Smiles: " + counter);
-            jumpbar.value = jumpbar.value + 0.25F;
-
-            if (counter >= 27.5F)
+            if (smileReceiver.smileReceived && playerMovement.canJump)
             {
-                Debug.Log("MAXIMUM JUMP POWER");
+                counter += 0.25F;
+                jumpIsCharging = true;
+                Debug.Log("Counted Smiles: " + counter);
+                jumpbar.value = jumpbar.value + 0.25F;
+            }
+            else if (jumpIsCharging && playerMovement.canJump)
+            {
                 jumpManager.RequestJump(counter);
-                counter = 21.5F;
+                Debug.Log("Weak Jump");
                 jumpIsCharging = false;
+                counter = 21.5F;
                 jumpbar.value = 0;
             }
-
             smileReceiver.smileReceived = false;
         }
 
-        else if (jumpIsCharging && playerMovement.canJump)
+        else if (counter >= 27.5)
         {
-
-            jumpManager.RequestJump(counter);
-            Debug.Log("Weak Jump");
-            jumpIsCharging = false;
-            counter = 21.5F;
+            if (smileReceiver.smileReceived && playerMovement.canJump)
+            {
+                jumpIsCharging = true;
+                Debug.Log("Counted Smiles: " + counter);
+            }
+            else if (jumpIsCharging && playerMovement.canJump)
+            {
+                jumpManager.RequestJump(27.5F);
+                Debug.Log("Max Jump");
+                jumpIsCharging = false;
+                counter = 21.5F;
+                jumpbar.value = 0;
+            }
             smileReceiver.smileReceived = false;
-            jumpbar.value = 0;
         }
-        else
-        {
-            smileReceiver.smileReceived = false;
-        }
-
     }
 
 }

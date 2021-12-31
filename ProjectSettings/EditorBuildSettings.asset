@@ -21,6 +21,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Keyboard.unity
     guid: cbe225831813896478aead66a2c9d42a
   - enabled: 1
-    path: Assets/Scenes/MenuKeyboard.unity
+    path: Assets/Scenes/Menu.unity
     guid: 0d6a712f616d7d04190ffe3abbbcf20d
   m_configObjects: {}

@@ -7,30 +7,30 @@ public class SunScript : MonoBehaviour
     Timer timer;
     GameManager gm;
     int life;
-    GameObject life1, life2, life3;
+    //GameObject life1, life2, life3;
 
     // Start is called before the first frame update
     void Start()
     {
         timer = GameObject.Find("Timer").GetComponent<Timer>();
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        life1 = GameObject.Find("Life1");
+        /*life1 = GameObject.Find("Life1");
         life2 = GameObject.Find("Life2");
         life3 = GameObject.Find("Life3");
-        life = 3;
+        life = 3;*/
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.name.Contains("cloud"))
         {
-            life -= 1;
+            timer.ReduceScore(50);
         }
     }
 
     private void Update()
     {
-        switch (life)
+        /*switch (life)
         {
             case 3:
                 life1.gameObject.SetActive(true);
@@ -51,7 +51,7 @@ public class SunScript : MonoBehaviour
                 Highscore.SetHighscore(timer.score);
                 gm.LoadMenu();
                 break;
-        }
+        }*/
     }
 
 }

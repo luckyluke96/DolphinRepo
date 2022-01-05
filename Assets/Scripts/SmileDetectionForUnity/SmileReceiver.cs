@@ -74,16 +74,27 @@ public class SmileReceiver : MonoBehaviour
         int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize); //Getting data in Bytes from Python
         string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead); //Converting byte data to string, because int Values cannot be null
 
-        if (dataReceived != null)
+        if (dataReceived.Equals("smile"))
         {
             jumpManager.RequestJump(27.5F);
             Debug.Log("Recieved Data from SmileDetection");
 
             //---Sending Data to Host----
-            byte[] myWriteBuffer = Encoding.ASCII.GetBytes("Recieved and sent data"); //Converting string to byte data
+            byte[] myWriteBuffer = Encoding.ASCII.GetBytes("Recieved and sent smile"); //Converting string to byte data
             nwStream.Write(myWriteBuffer, 0, myWriteBuffer.Length); //Sending the data in Bytes to Python
         }
+        byte[] WriteBuffer = Encoding.ASCII.GetBytes("Recieved and sent smile"); //Converting string to byte data
+        nwStream.Write(WriteBuffer, 0, WriteBuffer.Length);
 
+    }
+
+    public void SendGameOver()
+    {
+        NetworkStream nwStream = client.GetStream();
+        byte[] buffer = new byte[client.ReceiveBufferSize];
+        byte[] myWriteBuffer = Encoding.ASCII.GetBytes("GameOver"); //Converting string to byte data
+        nwStream.Write(myWriteBuffer, 0, myWriteBuffer.Length); //Sending the data in Bytes to Python
+        Debug.Log("GameOver wurde gesendet");
     }
 
     void SendAndReceiveDataContinuous()

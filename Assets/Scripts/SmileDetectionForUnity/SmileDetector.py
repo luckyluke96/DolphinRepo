@@ -12,20 +12,39 @@ smile_detector = cv2.CascadeClassifier("haarcascade_smile.xml")
 # Get Webcam
 webcam = cv2.VideoCapture(0)
 
+running = True
+
 
 def sendData():
     # Converting string to Byte, and sending it to C#
-    sock.sendall("1".encode("UTF-8"))
+    sock.sendall("smile".encode("UTF-8"))
     # receiveing data in Byte fron C#, and converting it to String
     receivedData = sock.recv(1024).decode("UTF-8")
     print(receivedData)
 
 
-while True:
+def checkGameOver():
+    sock.sendall("GameOverCheck".encode("UTF-8"))
+    receivedData = sock.recv(1024).decode("UTF-8")
+    print(receivedData)
+    print("CheckGameOverSuccess")
+    if(receivedData == "GameOver"):
+        print("___________________________________________________!!!!!__________________________________________________")
+        return False
+    else:
+        return True
+
+
+while running:
 
     # Store the webcam's frame as frame & abort on error
     successful_frame_read, frame = webcam.read()
     if not successful_frame_read:
+        break
+
+    running = checkGameOver()
+    print("Check was passed")
+    if (checkGameOver() == False):
         break
 
     # Change frame to grayscale for optimization

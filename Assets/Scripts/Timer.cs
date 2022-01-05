@@ -7,18 +7,23 @@ public class Timer : MonoBehaviour
 {
     GameManager gm;
     public Text scoreText;
+    GameObject increaseScoreText;
 
     // set it to true when gameplay has started, to false when level finished or game paused
     private bool timerRunning = false;
     public void SetTimerRunning(bool value) { timerRunning = value; }
 
-    private float remainingTime = 60F;
+    private float remainingTime = 5F;
     private float scoreTimer = 0F;
     public int score = 0;
+
+    PythonStarter python;
 
     private void Start()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        increaseScoreText = GameObject.Find("UI_ScorePlus");
+        python = GameObject.Find("GameManager").GetComponent<PythonStarter>();
     }
 
     private void Update()
@@ -40,6 +45,7 @@ public class Timer : MonoBehaviour
         {
             Highscore.SetHighscore(score);
             gm.LoadMenu();
+            python.quitCMD();
         }
     }
 
@@ -47,5 +53,12 @@ public class Timer : MonoBehaviour
     {
         score = score - value;
         scoreText.text = "Score: " + score.ToString();
+    }
+
+    public void IncreaseScore(int value)
+    {
+        score = score + value;
+        scoreText.text = "Score: " + score.ToString();
+        //increaseScoreText.text = "+ " + value;
     }
 }

@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rigidBody;
     public bool canJump = true;
+    Timer timer;
 
     // Max JF = 27.5F
     public float jumpForce = 21.5F;
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpForce = 21.5F;
         }
+        timer = GameObject.Find("Timer").GetComponent<Timer>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -31,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
         {
             canJump = true;
             Debug.Log("canJump ist true");
+        }
+        if (collision.gameObject.name.Contains("cloud"))
+        {
+            timer.IncreaseScore(50);
         }
     }
 

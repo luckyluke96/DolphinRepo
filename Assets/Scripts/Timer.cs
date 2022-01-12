@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour
 {
     GameManager gm;
     public Text scoreText;
-    GameObject increaseScoreText;
 
     // set it to true when gameplay has started, to false when level finished or game paused
     private bool timerRunning = false;
     public void SetTimerRunning(bool value) { timerRunning = value; }
 
-    private float remainingTime = 5F;
+    private float remainingTime = 10F;
     private float scoreTimer = 0F;
     public int score = 0;
 
@@ -22,8 +22,8 @@ public class Timer : MonoBehaviour
     private void Start()
     {
         gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-        increaseScoreText = GameObject.Find("UI_ScorePlus");
         python = GameObject.Find("GameManager").GetComponent<PythonStarter>();
+        score = 0;
     }
 
     private void Update()
@@ -44,8 +44,13 @@ public class Timer : MonoBehaviour
         if (remainingTime <= 0F)
         {
             Highscore.SetHighscore(score);
-            gm.LoadMenu();
-            python.quitCMD();
+            Score.SetEndOfRoundScore(score);
+            gm.LoadEndMenu();
+
+            if (SceneManager.GetActiveScene().name != "Keyboard")
+            {
+                python.quitCMD();
+            }
         }
     }
 
@@ -59,6 +64,5 @@ public class Timer : MonoBehaviour
     {
         score = score + value;
         scoreText.text = "Score: " + score.ToString();
-        //increaseScoreText.text = "+ " + value;
     }
 }

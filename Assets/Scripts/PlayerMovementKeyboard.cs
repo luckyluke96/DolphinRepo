@@ -7,14 +7,17 @@ public class PlayerMovementKeyboard : MonoBehaviour
 
     private Rigidbody2D rigidBody;
     public bool canJump = true;
+    Timer timer;
+    ScoreMinus scorePlus;
 
     // Max JF = 27.5F
     public float jumpForce = 14.5F;
 
     void Start()
     {
+        scorePlus = GameObject.Find("ScorePlus").GetComponent<ScoreMinus>();
         rigidBody = GetComponent<Rigidbody2D>();
-
+        timer = GameObject.Find("Timer").GetComponent<Timer>();
     }
     private void FixedUpdate()
     {
@@ -39,6 +42,14 @@ public class PlayerMovementKeyboard : MonoBehaviour
         {
             canJump = false;
             Debug.Log("canJump ist false");
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("cloud"))
+        {
+            timer.IncreaseScore(50);
+            scorePlus.Enable();
         }
     }
 

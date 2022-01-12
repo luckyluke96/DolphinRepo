@@ -77,5 +77,6 @@ while running:
     # Delay loop for better performance
     cv2.waitKey(1)
 
+# f= open("MessungLaecheln.txt","w+")
 webcam.release()
 cv2.destroyAllWindows()

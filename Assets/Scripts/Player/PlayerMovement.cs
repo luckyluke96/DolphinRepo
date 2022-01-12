@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rigidBody;
     public bool canJump = true;
     Timer timer;
+    ScoreMinus scorePlus;
 
     // Max JF = 27.5F
     public float jumpForce = 21.5F;
@@ -15,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        scorePlus = GameObject.Find("ScorePlus").GetComponent<ScoreMinus>();
 
         if (SceneManager.GetActiveScene().name == "DiscreteSmile")
         {
@@ -34,10 +36,6 @@ public class PlayerMovement : MonoBehaviour
             canJump = true;
             Debug.Log("canJump ist true");
         }
-        if (collision.gameObject.name.Contains("cloud"))
-        {
-            timer.IncreaseScore(50);
-        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -46,6 +44,15 @@ public class PlayerMovement : MonoBehaviour
         {
             canJump = false;
             Debug.Log("canJump ist false");
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains("cloud"))
+        {
+            timer.IncreaseScore(50);
+            scorePlus.Enable();
         }
     }
 

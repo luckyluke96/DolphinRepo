@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class CloudConstantMove : MonoBehaviour
 {
-    GameManager gameManager;
-    private Animator anim;
-    Timer timer;
+    //private Animator anim;
+
+    Vector3 moveVector;
+    int moveSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
-        gameManager = gameController.GetComponent<GameManager>();
+        moveVector = new Vector3(-1, 0, 0);
+        moveSpeed = 3;
 
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
       }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(gameManager.moveVector * gameManager.moveSpeed * Time.deltaTime);
+        transform.Translate(moveVector * moveSpeed * Time.deltaTime);
         if (transform.position.x <= -9)
         {
             Destroy(gameObject);
@@ -32,14 +33,15 @@ public class CloudConstantMove : MonoBehaviour
     {
         if (collision.gameObject.name == "Player")
         {
-            anim.Play("wolkeverpufft-pop");
-            Debug.Log("play anim");
+            //anim.Play("PopAnimation");
+            //Debug.Log("play anim");
             Destroy(gameObject);
+
         }
-        else if (collision.gameObject.name == "Sun")
+        /*else if (collision.gameObject.name == "Sun")
         {
             Destroy(gameObject);
-        }
+        }*/
     }
 
 }

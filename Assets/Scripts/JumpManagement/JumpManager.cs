@@ -9,6 +9,10 @@ public class JumpManager : MonoBehaviour
     private bool jumpWasRequested = false;
     private float jumpForce = 0F;
 
+    public float minJumpForce = 21.5F;
+    public float maxJumpForce = 28.23F;
+    public int smileCounter = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +25,7 @@ public class JumpManager : MonoBehaviour
         if (jumpWasRequested)
         {
             playerMovement.Jump(jumpForce);
+            smileCounter += 1;
             jumpWasRequested = false;
         }
     }

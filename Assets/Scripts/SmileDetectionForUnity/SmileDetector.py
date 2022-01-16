@@ -1,6 +1,5 @@
 import socket
 import cv2
-import time
 
 host, port = "127.0.0.1", 25001
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -8,6 +7,7 @@ sock.connect((host, port))
 
 face_detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 smile_detector = cv2.CascadeClassifier("haarcascade_smile.xml")
+messung = "leer"
 
 # Get Webcam
 webcam = cv2.VideoCapture(0)
@@ -27,9 +27,7 @@ def checkGameOver():
     sock.sendall("GameOverCheck".encode("UTF-8"))
     receivedData = sock.recv(1024).decode("UTF-8")
     print(receivedData)
-    print("CheckGameOverSuccess")
-    if(receivedData == "GameOver"):
-        print("___________________________________________________!!!!!__________________________________________________")
+    if "GameOver" in receivedData:
         return False
     else:
         return True
@@ -72,11 +70,9 @@ while running:
         for (detected_smile) in smiles:
             print("smiled")
             sendData()
-            # time.sleep(0.2)
 
     # Delay loop for better performance
     cv2.waitKey(1)
 
-# f= open("MessungLaecheln.txt","w+")
 webcam.release()
 cv2.destroyAllWindows()

@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using System.Threading;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class SmileReceiver : MonoBehaviour
 {
@@ -17,24 +18,27 @@ public class SmileReceiver : MonoBehaviour
     TcpClient client;
 
     JumpManager jumpManager;
-    PlayerMovement playerMovement;
+    SmileTicker smileTicker;
 
     bool running;
     public bool smileReceived;
     string sceneName;
+    string messungString;
 
     private void Start()
     {
         jumpManager = GameObject.Find("JumpManager").GetComponent<JumpManager>();
-        playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
 
         if (SceneManager.GetActiveScene().name == "DiscreteSmile")
         {
             sceneName = "discreteSmile";
+            messungString = "Diskret: ";
         }
         else if (SceneManager.GetActiveScene().name == "ContinuousSmile")
         {
             sceneName = "continuousSmile";
+            smileTicker = GameObject.Find("SmileTicker").GetComponent<SmileTicker>();
+            messungString = "Lang: ";
         }
 
         ThreadStart ts = new ThreadStart(GetInfo);
@@ -76,7 +80,7 @@ public class SmileReceiver : MonoBehaviour
 
         if (dataReceived.Equals("smile"))
         {
-            jumpManager.RequestJump(27.5F);
+            jumpManager.RequestJump(jumpManager.maxJumpForce);
             Debug.Log("Recieved Data from SmileDetection");
 
             //---Sending Data to Host----
@@ -85,16 +89,6 @@ public class SmileReceiver : MonoBehaviour
         }
         byte[] WriteBuffer = Encoding.ASCII.GetBytes("Recieved and sent smile"); //Converting string to byte data
         nwStream.Write(WriteBuffer, 0, WriteBuffer.Length);
-
-    }
-
-    public void SendGameOver()
-    {
-        NetworkStream nwStream = client.GetStream();
-        byte[] buffer = new byte[client.ReceiveBufferSize];
-        byte[] myWriteBuffer = Encoding.ASCII.GetBytes("GameOver"); //Converting string to byte data
-        nwStream.Write(myWriteBuffer, 0, myWriteBuffer.Length); //Sending the data in Bytes to Python
-        Debug.Log("GameOver wurde gesendet");
     }
 
     void SendAndReceiveDataContinuous()
@@ -107,7 +101,6 @@ public class SmileReceiver : MonoBehaviour
         string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead); //Converting byte data to string, because int Values cannot be 
 
         if (dataReceived.Equals("smile"))
-
         {
             smileReceived = true;
             Debug.Log("Recieved Data from SmileDetection");
@@ -117,5 +110,40 @@ public class SmileReceiver : MonoBehaviour
         }
         byte[] WriteBuffer = Encoding.ASCII.GetBytes("Recieved and sent smile"); //Converting string to byte data
         nwStream.Write(WriteBuffer, 0, WriteBuffer.Length);
+    }
+
+    public void SendGameOver()
+    {
+        if (sceneName == "continuousSmile")
+        {
+            foreach (float smile in smileTicker.smilesList)
+            {
+                messungString += smile + " | ";
+            }
+            messungString += "Lang gesamt: " + smileTicker.smileDurationRound + " ";
+            Debug.Log(messungString);
+            WriteFile(messungString);
+        }
+        else if (sceneName == "discreteSmile")
+        {
+            messungString += jumpManager.smileCounter + " ";
+            Debug.Log(messungString);
+            WriteFile(messungString);
+        }
+
+        NetworkStream nwStream = client.GetStream();
+        byte[] buffer = new byte[client.ReceiveBufferSize];
+        byte[] myWriteBuffer = Encoding.ASCII.GetBytes("GameOver"); //Converting string to byte data
+        nwStream.Write(myWriteBuffer, 0, myWriteBuffer.Length); //Sending the data in Bytes to Python
+        Debug.Log("GameOver wurde gesendet");
+    }
+
+    void WriteFile(string messung)
+    {
+        using (StreamWriter writetext = new StreamWriter(Directory.GetCurrentDirectory() + "\\Messung.txt", true))
+        {
+            writetext.Write(messung);
+            writetext.Close();
+        }
     }
 }

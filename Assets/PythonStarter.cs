@@ -12,13 +12,13 @@ public class PythonStarter : MonoBehaviour
     void Start()
     {
         receiver = GameObject.Find("SmileReceiver").GetComponent<SmileReceiver>();
-        UnityEngine.Debug.Log(Directory.GetCurrentDirectory()); //C:\Users\Daniel\Unity_Projekte\DolphinRepo
+        UnityEngine.Debug.Log(Directory.GetCurrentDirectory());
         proc = new Process
         {
             StartInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
-                WorkingDirectory = @".\Assets\Scripts\SmileDetectionForUnity\",
+                WorkingDirectory = Directory.GetCurrentDirectory() + @"\Assets\Scripts\SmileDetectionForUnity\",
                 Arguments = "/C python SmileDetector.py"
             }
         };

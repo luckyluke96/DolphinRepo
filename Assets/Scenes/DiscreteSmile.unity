@@ -1199,6 +1199,14 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5569265545477439598, guid: a9d2e28be1b6c334286ef521a62506f0, type: 3}
+      propertyPath: canJump
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5569265545477439598, guid: a9d2e28be1b6c334286ef521a62506f0, type: 3}
+      propertyPath: jumpForce
+      value: 21.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5569265545477439599, guid: a9d2e28be1b6c334286ef521a62506f0, type: 3}
       propertyPath: m_RootOrder
       value: 4

@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
-    guid: 0d6a712f616d7d04190ffe3abbbcf20d
+    path: Assets/Scenes/StartMenu.unity
+    guid: c457a8735ca13654f92686fdf449ce27
   - enabled: 1
     path: Assets/Scenes/ContinuousSmile.unity
     guid: bc5c87a38b91caa43aea0aeb37de3377
@@ -23,9 +26,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Keyboard_Spielanleitung.unity
     guid: 17d0968d015a440878f2603dfe631f7f
-  - enabled: 1
-    path: Assets/Scenes/StartMenu.unity
-    guid: c457a8735ca13654f92686fdf449ce27
   - enabled: 1
     path: Assets/Scenes/Continuous_Spielanleitung.unity
     guid: 5adc2fe2910584a2bb8d654220396b9d

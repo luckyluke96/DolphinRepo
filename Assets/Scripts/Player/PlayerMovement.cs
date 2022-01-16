@@ -9,23 +9,12 @@ public class PlayerMovement : MonoBehaviour
     public bool canJump = true;
     Timer timer;
     ScoreMinus scorePlus;
-
-    // Max JF = 27.5F
-    public float jumpForce = 21.5F;
     
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         scorePlus = GameObject.Find("ScorePlus").GetComponent<ScoreMinus>();
 
-        if (SceneManager.GetActiveScene().name == "DiscreteSmile")
-        {
-            jumpForce = 27.5F;
-        }
-        else if (SceneManager.GetActiveScene().name == "ContinuousSmile")
-        {
-            jumpForce = 21.5F;
-        }
         timer = GameObject.Find("Timer").GetComponent<Timer>();
     }
 

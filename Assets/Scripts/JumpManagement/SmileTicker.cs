@@ -8,9 +8,19 @@ public class SmileTicker : MonoBehaviour
     SmileReceiver smileReceiver;
     JumpManager jumpManager;
     PlayerMovement playerMovement;
-    float counter;
-    private bool jumpIsCharging = false;
     Slider jumpbar;
+
+    float minJumpForce;
+    float maxJumpForce;
+    float checkForSmileInterval = 0.2F;
+
+    float jumpForce;
+    float jumpForceInterval;
+    bool jumpIsCharging = false;
+
+    int smileCounter = 0;
+    public float smileDurationRound = 0;
+    public List<float> smilesList;
 
     // Start is called before the first frame update
     void Start()
@@ -20,49 +30,62 @@ public class SmileTicker : MonoBehaviour
         playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         jumpbar = GameObject.Find("Jumpbar").GetComponent<Slider>();
 
+        minJumpForce = jumpManager.minJumpForce;
+        maxJumpForce = jumpManager.maxJumpForce;
+        jumpForceInterval = (maxJumpForce - minJumpForce) / 6;
+        jumpbar.minValue = minJumpForce;
+        jumpbar.maxValue = maxJumpForce;
+        jumpForce = minJumpForce;
 
-        counter = 21.5F;
-        InvokeRepeating("CheckForSmile", 0.001F, 0.25F);
+        smilesList = new List<float>();
+
+        InvokeRepeating("CheckForSmile", 0.001F, checkForSmileInterval);
 
     }
 
     void CheckForSmile()
     {
 
-        if (counter < 27.5)
+        if (jumpForce < maxJumpForce)
         {
-            if (smileReceiver.smileReceived && playerMovement.canJump)
+            if (smileReceiver.smileReceived && playerMovement.canJump) // Init Jump-Loading-Sequence
             {
-                counter += 0.25F;
+                jumpForce += jumpForceInterval;
                 jumpIsCharging = true;
-                Debug.Log("Counted Smiles: " + counter);
-                jumpbar.value = jumpbar.value + 0.25F;
+                jumpbar.value += jumpForceInterval;
+                smileCounter += 1;
             }
-            else if (jumpIsCharging && playerMovement.canJump)
+            else if (jumpIsCharging && playerMovement.canJump) // Weak Jump
             {
-                jumpManager.RequestJump(counter);
-                Debug.Log("Weak Jump");
+                jumpManager.RequestJump(jumpForce);
                 jumpIsCharging = false;
-                counter = 21.5F;
-                jumpbar.value = 0;
+                jumpForce = minJumpForce;
+                jumpbar.value = jumpbar.minValue;
+
+                smilesList.Add(smileCounter * checkForSmileInterval); // Calc length of continuous smile and add to list
+                smileDurationRound += (smileCounter * checkForSmileInterval); // Calc length of continuous smile duration
+                smileCounter = 0;
             }
             smileReceiver.smileReceived = false;
         }
 
-        else if (counter >= 27.5)
+        else if (jumpForce >= maxJumpForce)
         {
-            if (smileReceiver.smileReceived && playerMovement.canJump)
+            if (smileReceiver.smileReceived && playerMovement.canJump) // Hold Max Jump
             {
                 jumpIsCharging = true;
-                Debug.Log("Counted Smiles: " + counter);
+                smileCounter += 1;
             }
-            else if (jumpIsCharging && playerMovement.canJump)
+            else if (jumpIsCharging && playerMovement.canJump) // Max Jump
             {
-                jumpManager.RequestJump(27.5F);
-                Debug.Log("Max Jump");
+                jumpManager.RequestJump(jumpManager.maxJumpForce);
                 jumpIsCharging = false;
-                counter = 21.5F;
-                jumpbar.value = 0;
+                jumpForce = minJumpForce;
+                jumpbar.value = jumpbar.minValue;
+
+                smilesList.Add(smileCounter * checkForSmileInterval); // Calc length of continuous smile and add to list
+                smileDurationRound += (smileCounter * checkForSmileInterval); // Calc length of continuous smile duration
+                smileCounter = 0;
             }
             smileReceiver.smileReceived = false;
         }

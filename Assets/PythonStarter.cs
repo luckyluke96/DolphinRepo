@@ -13,16 +13,35 @@ public class PythonStarter : MonoBehaviour
     {
         receiver = GameObject.Find("SmileReceiver").GetComponent<SmileReceiver>();
         UnityEngine.Debug.Log(Directory.GetCurrentDirectory());
-        proc = new Process
+
+        if (SystemInfo.operatingSystem.Contains("Windows"))
         {
-            StartInfo = new ProcessStartInfo
+            proc = new Process
             {
-                FileName = "cmd.exe",
-                WorkingDirectory = Directory.GetCurrentDirectory() + @"\Assets\Scripts\SmileDetectionForUnity\",
-                Arguments = "/C python SmileDetector.py"
-            }
-        };
-        proc.Start();
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    WindowStyle = ProcessWindowStyle.Minimized,
+                    WorkingDirectory = Directory.GetCurrentDirectory() + @"\Assets\Scripts\SmileDetectionForUnity\",
+                    Arguments = "/C python SmileDetector.py"
+                }
+            };
+            proc.Start();
+        }
+
+        else
+        {
+            proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                    WorkingDirectory = Directory.GetCurrentDirectory() + @"/Assets/Scripts/SmileDetectionForUnity/",
+                    Arguments = " -c \"" + "python SmileDetector.py" + " \""
+                }
+            };
+            proc.Start();
+        }
     }
 
     public void quitCMD()

@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public static class Highscore
 {
     public static int highscore = 0;
-    public static bool highscoreWasSet = false;
-
+    public static bool highscoreWasSet = false;    
 
     public static void SetHighscore(int newHighscore)
     {

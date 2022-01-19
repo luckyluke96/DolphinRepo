@@ -6,7 +6,6 @@ using System.Text;
 using UnityEngine;
 using System.Threading;
 using UnityEngine.SceneManagement;
-using System.IO;
 
 public class SmileReceiver : MonoBehaviour
 {
@@ -23,7 +22,6 @@ public class SmileReceiver : MonoBehaviour
     bool running;
     public bool smileReceived;
     string sceneName;
-    string messungString;
 
     private void Start()
     {
@@ -32,13 +30,13 @@ public class SmileReceiver : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "DiscreteSmile")
         {
             sceneName = "discreteSmile";
-            messungString = "Diskret: ";
+            //messungString = "Diskret: ";
         }
         else if (SceneManager.GetActiveScene().name == "ContinuousSmile")
         {
             sceneName = "continuousSmile";
             smileTicker = GameObject.Find("SmileTicker").GetComponent<SmileTicker>();
-            messungString = "Lang: ";
+            //messungString = "Lang: ";
         }
 
         ThreadStart ts = new ThreadStart(GetInfo);
@@ -116,19 +114,16 @@ public class SmileReceiver : MonoBehaviour
     {
         if (sceneName == "continuousSmile")
         {
-            foreach (float smile in smileTicker.smilesList)
-            {
-                messungString += smile + " | ";
-            }
-            messungString += "Lang gesamt: " + smileTicker.smileDurationRound + " ";
-            Debug.Log(messungString);
-            WriteFile(messungString);
+            Messung.messungCont = smileTicker.smileDurationRound;
         }
         else if (sceneName == "discreteSmile")
         {
-            messungString += jumpManager.smileCounter + " ";
-            Debug.Log(messungString);
-            WriteFile(messungString);
+            Messung.messungDisc = jumpManager.smileCounter * 0.2F;
+        }
+        
+        if((Messung.messungDisc != -1) && (Messung.messungCont != -1))
+        {
+            Messung.WriteFile();
         }
 
         NetworkStream nwStream = client.GetStream();
@@ -136,14 +131,5 @@ public class SmileReceiver : MonoBehaviour
         byte[] myWriteBuffer = Encoding.ASCII.GetBytes("GameOver"); //Converting string to byte data
         nwStream.Write(myWriteBuffer, 0, myWriteBuffer.Length); //Sending the data in Bytes to Python
         Debug.Log("GameOver wurde gesendet");
-    }
-
-    void WriteFile(string messung)
-    {
-        using (StreamWriter writetext = new StreamWriter(Directory.GetCurrentDirectory() + "\\Messung.txt", true))
-        {
-            writetext.Write(messung);
-            writetext.Close();
-        }
     }
 }

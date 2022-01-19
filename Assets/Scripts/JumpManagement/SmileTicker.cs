@@ -32,7 +32,7 @@ public class SmileTicker : MonoBehaviour
 
         minJumpForce = jumpManager.minJumpForce;
         maxJumpForce = jumpManager.maxJumpForce;
-        jumpForceInterval = (maxJumpForce - minJumpForce) / 6;
+        jumpForceInterval = (maxJumpForce - minJumpForce) / 4;
         jumpbar.minValue = minJumpForce;
         jumpbar.maxValue = maxJumpForce;
         jumpForce = minJumpForce;

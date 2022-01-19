@@ -10,8 +10,7 @@ public class PlayerMovementKeyboard : MonoBehaviour
     Timer timer;
     ScoreMinus scorePlus;
 
-    // Max JF = 27.5F
-    public float jumpForce = 14.5F;
+    float jumpForce = 10.3F;
 
     void Start()
     {

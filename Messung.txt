@@ -1,0 +1,1 @@
+Lang: 0,2 | 1 | Lang gesamt: 1,2 Lang: 0,2 | 0,4 | 0,2 | Lang gesamt: 0,8 Lang: 0,4 | 0,2 | Lang gesamt: 0,6 Diskret: 4 Diskret: 3 Diskret: 4 Lang: 2 | 0,2 | 0,8 | Lang gesamt: 3 Lang: 1 | 0,2 | 1,8 | Lang gesamt: 3 Lang: 1,4 | 1,6 | Lang gesamt: 3 
